@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Force 007 - Quiz Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+        }
+        
+        .screen {
+            display: none;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #00b4db, #0083b0);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, #ff8c00, #ff5500);
+        }
+        
+        .btn-success {
+            background: linear-gradient(to right, #00c851, #007e33);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(to right, #ff4444, #cc0000);
+        }
+        
+        .timer-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .timer {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+        }
+        
+        .question-number {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: #cccccc;
+        }
+        
+        .question-text {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            text-align: center;
+            line-height: 1.5;
+            color: #ffffff;
+        }
+        
+        .options-container {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .option.correct {
+            background: rgba(0, 200, 83, 0.3);
+            border-color: #00c851;
+        }
+        
+        .option.incorrect {
+            background: rgba(255, 68, 68, 0.3);
+            border-color: #ff4444;
+        }
+        
+        .feedback {
+            text-align: center;
+            font-size: 1.3rem;
+            margin: 20px 0;
+            min-height: 40px;
+        }
+        
+        .correct-feedback {
+            color: #00c851;
+        }
+        
+        .incorrect-feedback {
+            color: #ff4444;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #00b4db, #0083b0);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .result-screen {
+            text-align: center;
+        }
+        
+        .result-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ffcc00;
+        }
+        
+        .result-score {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #00ffff;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+        
+        .leaderboard {
+            margin: 30px 0;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .leaderboard-title {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .settings {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .setting-item {
+            text-align: center;
+        }
+        
+        .question-indicators {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+        }
+        
+        .question-indicator {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .question-indicator.current {
+            background: #00b4db;
+            transform: scale(1.2);
+        }
+        
+        .question-indicator.answered {
+            background: #ffcc00;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question-text {
+                font-size: 1.2rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .settings {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Black Force 007</h1>
+            <div class="subtitle">সামাজিক জ্ঞান কুইজ গেম</div>
+        </header>
+        
+        <div id="start-screen" class="screen active">
+            <div class="question-text">
+                সামাজিক জ্ঞান পরীক্ষা করুন ৫০টি প্রশ্নের মাধ্যমে
+            </div>
+            <div class="settings">
+                <div class="setting-item">
+                    <label for="time-limit">সময় সীমা:</label>
+                    <select id="time-limit" class="btn">
+                        <option value="15">১৫ সেকেন্ড</option>
+                        <option value="30">৩০ সেকেন্ড</option>
+                    </select>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="start-btn" class="btn">স্টার্ট গেম</button>
+            </div>
+        </div>
+        
+        <div id="game-screen" class="screen">
+            <div class="timer-container">
+                <div class="timer" id="timer">১৫</div>
+            </div>
+            <div class="question-number" id="question-number">প্রশ্ন ১/৫০</div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="question-text" id="question-text">প্রশ্ন লোড হচ্ছে...</div>
+            <div class="options-container" id="options-container">
+                <!-- Options will be inserted here by JavaScript -->
+            </div>
+            <div class="feedback" id="feedback"></div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="score">০</div>
+                    <div class="stat-label">স্কোর</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="streak">০</div>
+                    <div class="stat-label">স্ট্রীক</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="correct-count">০</div>
+                    <div class="stat-label">সঠিক</div>
+                </div>
+            </div>
+            <div class="question-indicators" id="question-indicators">
+                <!-- Question indicators will be inserted here by JavaScript -->
+            </div>
+            <div style="text-align: center;">
+                <button id="next-btn" class="btn" style="display: none;">পরবর্তী প্রশ্ন</button>
+            </div>
+        </div>
+        
+        <div id="result-screen" class="screen">
+            <div class="result-title">গেম শেষ!</div>
+            <div class="result-score" id="final-score">০</div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="final-correct">০</div>
+                    <div class="stat-label">সঠিক উত্তর</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="final-time">০</div>
+                    <div class="stat-label">গড় সময়</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="final-streak">০</div>
+                    <div class="stat-label">সর্বোচ্চ স্ট্রীক</div>
+                </div>
+            </div>
+            <div class="leaderboard">
+                <div class="leaderboard-title">লিডারবোর্ড</div>
+                <div id="leaderboard-list">
+                    <!-- Leaderboard items will be inserted here by JavaScript -->
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="restart-btn" class="btn">আবার খেলুন</button>
+                <button id="share-btn" class="btn btn-secondary">শেয়ার করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // প্রশ্ন ডেটাবেস
+        const questions = [
+            {
+                question: "বাংলাদেশের স্বাধীনতা দিবস কত তারিখে?",
+                options: ["২৬ মার্চ", "১৬ ডিসেম্বর", "২১ ফেব্রুয়ারি", "৭ নভেম্বর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় পাখির নাম কি?",
+                options: ["ময়ূর", "কাক", "দোয়েল", "ময়না"],
+                correct: 2
+            },
+            {
+                question: "বাংলাদেশের জাতীয় ফুল কি?",
+                options: ["গোলাপ", "শাপলা", "গাঁদা", "কমল"],
+                correct: 1
+            },
+            {
+                question: "বাংলাদেশের রাষ্ট্রভাষা কি?",
+                options: ["ইংরেজি", "হিন্দি", "বাংলা", "উর্দু"],
+                correct: 2
+            },
+            {
+                question: "বাংলাদেশের প্রথম প্রধানমন্ত্রী কে ছিলেন?",
+                options: ["শেখ মুজিবুর রহমান", "তাজউদ্দীন আহমেদ", "খন্দকার মোশতাক আহমেদ", "জিয়াউর রহমান"],
+                correct: 1
+            },
+            {
+                question: "বাংলাদেশের জাতীয় সংসদের আসন কয়টি?",
+                options: ["৩০০", "৩৫০", "৪০০", "৪৫০"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় খেলা কি?",
+                options: ["ক্রিকেট", "ফুটবল", "কাবাডি", "হকি"],
+                correct: 2
+            },
+            {
+                question: "বাংলাদেশের মুক্তিযুদ্ধ কত সালে সংঘটিত হয়?",
+                options: ["১৯৬৯", "১৯৭০", "১৯৭১", "১৯৭২"],
+                correct: 2
+            },
+            {
+                question: "বাংলাদেশের জাতীয় কবি কে?",
+                options: ["রবীন্দ্রনাথ ঠাকুর", "কাজী নজরুল ইসলাম", "মাইকেল মধুসূদন দত্ত", "জসীমউদ্দীন"],
+                correct: 1
+            },
+            {
+                question: "বাংলাদেশের সবচেয়ে বড় নদী কোনটি?",
+                options: ["যমুনা", "পদ্মা", "মেঘনা", "ব্রহ্মপুত্র"],
+                correct: 1
+            },
+            {
+                question: "বাংলাদেশের জাতীয় মাছ কি?",
+                options: ["রুই", "কাতলা", "ইলিশ", "পাঙ্গাস"],
+                correct: 2
+            },
+            {
+                question: "বাংলাদেশের জাতীয় ফল কি?",
+                options: ["আম", "কাঁঠাল", "জackfruit", "লিচু"],
+                correct: 1
+            },
+            {
+                question: "বাংলাদেশের রাজধানীর নাম কি?",
+                options: ["চট্টগ্রাম", "ঢাকা", "খুলনা", "রাজশাহী"],
+                correct: 1
+            },
+            {
+                question: "বাংলাদেশের মুদ্রার নাম কি?",
+                options: ["রুপি", "টাকা", "ডলার", "ইয়েন"],
+                correct: 1
+            },
+            {
+                question: "বাংলাদেশের জাতীয় পশু কি?",
+                options: ["বাঘ", "হাতি", "ময়ূর", "রয়েল বেঙ্গল টাইগার"],
+                correct: 3
+            },
+            {
+                question: "বাংলাদেশের সর্বোচ্চ পর্বতশৃঙ্গের নাম কি?",
+                options: ["কেওক্রাডং", "তাজিংডং", "সাকা হাফং", "মোদক মুয়াল"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের সবচেয়ে বড় বন্দর কোনটি?",
+                options: ["মংলা বন্দর", "চট্টগ্রাম বন্দর", "পায়রা বন্দর", "নরসিংদী বন্দর"],
+                correct: 1
+            },
+            {
+                question: "বাংলাদেশের জাতীয় উদ্যানের নাম কি?",
+                options: ["সুন্দরবন", "ভাওয়াল জাতীয় উদ্যান", "লawachara জাতীয় উদ্যান", "মধুপুর গড়"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় স্মৃতিসৌধ কোথায় অবস্থিত?",
+                options: ["ঢাকায়", "সাভারে", "কুমিল্লায়", "বগুড়ায়"],
+                correct: 1
+            },
+            {
+                question: "বাংলাদেশের জাতীয় কৃষি দিবস কত তারিখে?",
+                options: ["১ বৈশাখ", "১৫ আষাঢ়", "১ অগ্রহায়ণ", "৩০ ফাল্গুন"],
+                correct: 2
+            },
+            {
+                question: "বাংলাদেশের সংবিধান কত সালে গৃহীত হয়?",
+                options: ["১৯৭১", "১৯৭২", "১৯৭৩", "১৯৭৪"],
+                correct: 1
+            },
+            {
+                question: "বাংলাদেশের জাতীয় শিশু দিবস কত তারিখে?",
+                options: ["১৭ মার্চ", "২৬ মার্চ", "২১ ফেব্রুয়ারি", "১৬ ডিসেম্বর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় শিক্ষা দিবস কত তারিখে?",
+                options: ["১৭ সেপ্টেম্বর", "২১ ফেব্রুয়ারি", "২৬ মার্চ", "১৬ ডিসেম্বর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় স্যানিটেশন মাস কোনটি?",
+                options: ["অক্টোবর", "নভেম্বর", "ডিসেম্বর", "জানুয়ারি"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় তথ্য ও যোগাযোগ প্রযুক্তি দিবস কত তারিখে?",
+                options: ["১২ ডিসেম্বর", "১২ নভেম্বর", "১২ অক্টোবর", "১২ সেপ্টেম্বর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় দুর্যোগ প্রস্তুতি দিবস কত তারিখে?",
+                options: ["৩১ মার্চ", "৩০ এপ্রিল", "৩১ মে", "৩০ জুন"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় সমবায় দিবস কত তারিখে?",
+                options: ["১ নভেম্বর", "১ ডিসেম্বর", "১ জানুয়ারি", "১ ফেব্রুয়ারি"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় সড়ক নিরাপত্তা দিবস কত তারিখে?",
+                options: ["২২ অক্টোবর", "২২ নভেম্বর", "২২ ডিসেম্বর", "২২ জানুয়ারি"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় কন্যা শিশু দিবস কত তারিখে?",
+                options: ["৩০ সেপ্টেম্বর", "৩০ অক্টোবর", "৩০ নভেম্বর", "৩০ ডিসেম্বর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় প্রবীণ দিবস কত তারিখে?",
+                options: ["১ অক্টোবর", "১ নভেম্বর", "১ ডিসেম্বর", "১ জানুয়ারি"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় প্রতিবন্ধী দিবস কত তারিখে?",
+                options: ["২ এপ্রিল", "২ মে", "২ জুন", "২ জুলাই"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় নারী দিবস কত তারিখে?",
+                options: ["৮ মার্চ", "৮ এপ্রিল", "৮ মে", "৮ জুন"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় স্বাস্থ্য দিবস কত তারিখে?",
+                options: ["৭ এপ্রিল", "৭ মে", "৭ জুন", "৭ জুলাই"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় পরিবেশ দিবস কত তারিখে?",
+                options: ["৫ জুন", "৫ জুলাই", "৫ আগস্ট", "৫ সেপ্টেম্বর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় বিজ্ঞান ও প্রযুক্তি দিবস কত তারিখে?",
+                options: ["২৬ ফেব্রুয়ারি", "২৬ মার্চ", "২৬ এপ্রিল", "২৬ মে"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় গ্রন্থাগার দিবস কত তারিখে?",
+                options: ["৫ ফেব্রুয়ারি", "৫ মার্চ", "৫ এপ্রিল", "৫ মে"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় সাক্ষরতা দিবস কত তারিখে?",
+                options: ["৮ সেপ্টেম্বর", "৮ অক্টোবর", "৮ নভেম্বর", "৮ ডিসেম্বর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় যুব দিবস কত তারিখে?",
+                options: ["১ নভেম্বর", "১ ডিসেম্বর", "১ জানুয়ারি", "১ ফেব্রুয়ারি"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় ক্রীড়া দিবস কত তারিখে?",
+                options: ["৬ এপ্রিল", "৬ মে", "৬ জুন", "৬ জুলাই"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় সংগীত দিবস কত তারিখে?",
+                options: ["১ ডিসেম্বর", "১ নভেম্বর", "১ অক্টোবর", "১ সেপ্টেম্বর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় চলচ্চিত্র দিবস কত তারিখে?",
+                options: ["৩ এপ্রিল", "৩ মে", "৩ জুন", "৩ জুলাই"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় নাট্য দিবস কত তারিখে?",
+                options: ["২ জানুয়ারি", "২ ফেব্রুয়ারি", "২ মার্চ", "২ এপ্রিল"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় চিত্রকলা দিবস কত তারিখে?",
+                options: ["১৫ অক্টোবর", "১৫ নভেম্বর", "১৫ ডিসেম্বর", "১৫ জানুয়ারি"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় স্থাপত্য দিবস কত তারিখে?",
+                options: ["৭ জুলাই", "৭ আগস্ট", "৭ সেপ্টেম্বর", "৭ অক্টোবর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় পোশাক দিবস কত তারিখে?",
+                options: ["১ মার্চ", "১ এপ্রিল", "১ মে", "১ জুন"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় খাদ্য দিবস কত তারিখে?",
+                options: ["২ জুন", "২ জুলাই", "২ আগস্ট", "২ সেপ্টেম্বর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় পানি দিবস কত তারিখে?",
+                options: ["২২ মার্চ", "২২ এপ্রিল", "২২ মে", "২২ জুন"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় বন দিবস কত তারিখে?",
+                options: ["২১ জুন", "২১ জুলাই", "২১ আগস্ট", "২১ সেপ্টেম্বর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় মৎস্য দিবস কত তারিখে?",
+                options: ["২২ জুলাই", "২২ আগস্ট", "২২ সেপ্টেম্বর", "২২ অক্টোবর"],
+                correct: 0
+            },
+            {
+                question: "বাংলাদেশের জাতীয় পশুসম্পদ দিবস কত তারিখে?",
+                options: ["২ আগস্ট", "২ সেপ্টেম্বর", "২ অক্টোবর", "২ নভেম্বর"],
+                correct: 0
+            }
+        ];
+
+        // গেম ভেরিয়েবলস
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let correctCount = 0;
+        let timeLeft = 15;
+        let timer;
+        let timeLimit = 15;
+        let answeredQuestions = new Set();
+        let questionOrder = [];
+        let startTime;
+        let totalTime = 0;
+        let maxStreak = 0;
+
+        // DOM এলিমেন্টস
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const shareBtn = document.getElementById('share-btn');
+        const timerElement = document.getElementById('timer');
+        const questionNumberElement = document.getElementById('question-number');
+        const questionTextElement = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackElement = document.getElementById('feedback');
+        const scoreElement = document.getElementById('score');
+        const streakElement = document.getElementById('streak');
+        const correctCountElement = document.getElementById('correct-count');
+        const progressElement = document.getElementById('progress');
+        const questionIndicators = document.getElementById('question-indicators');
+        const finalScoreElement = document.getElementById('final-score');
+        const finalCorrectElement = document.getElementById('final-correct');
+        const finalTimeElement = document.getElementById('final-time');
+        const finalStreakElement = document.getElementById('final-streak');
+        const leaderboardList = document.getElementById('leaderboard-list');
+        const timeLimitSelect = document.getElementById('time-limit');
+
+        // ইভেন্ট লিসেনারস
+        startBtn.addEventListener('click', startGame);
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', restartGame);
+        shareBtn.addEventListener('click', shareResult);
+        timeLimitSelect.addEventListener('change', updateTimeLimit);
+
+        // টাইম লিমিট আপডেট
+        function updateTimeLimit() {
+            timeLimit = parseInt(timeLimitSelect.value);
+        }
+
+        // গেম শুরু
+        function startGame() {
+            // প্রশ্ন অর্ডার শাফল করুন
+            questionOrder = [...Array(questions.length).keys()];
+            shuffleArray(questionOrder);
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            streak = 0;
+            correctCount = 0;
+            maxStreak = 0;
+            totalTime = 0;
+            answeredQuestions.clear();
+            
+            updateTimeLimit();
+            timeLeft = timeLimit;
+            
+            startScreen.classList.remove('active');
+            gameScreen.classList.add('active');
+            
+            loadQuestion();
+            createQuestionIndicators();
+            startTimer();
+            startTime = Date.now();
+        }
+
+        // প্রশ্ন লোড
+        function loadQuestion() {
+            const questionIndex = questionOrder[currentQuestionIndex];
+            const question = questions[questionIndex];
+            
+            questionNumberElement.textContent = `প্রশ্ন ${currentQuestionIndex + 1}/${questions.length}`;
+            questionTextElement.textContent = question.question;
+            
+            // প্রোগ্রেস বার আপডেট
+            progressElement.style.width = `${(currentQuestionIndex / questions.length) * 100}%`;
+            
+            // অপশনস ক্লিয়ার এবং নতুন অপশনস যোগ
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                optionElement.textContent = option;
+                optionElement.dataset.index = index;
+                optionElement.addEventListener('click', selectOption);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // নেক্সট বাটন লুকান
+            nextBtn.style.display = 'none';
+            feedbackElement.textContent = '';
+            
+            // প্রশ্ন ইন্ডিকেটর আপডেট
+            updateQuestionIndicators();
+        }
+
+        // প্রশ্ন ইন্ডিকেটর তৈরি
+        function createQuestionIndicators() {
+            questionIndicators.innerHTML = '';
+            for (let i = 0; i < questions.length; i++) {
+                const indicator = document.createElement('div');
+                indicator.classList.add('question-indicator');
+                indicator.textContent = i + 1;
+                indicator.addEventListener('click', () => navigateToQuestion(i));
+                questionIndicators.appendChild(indicator);
+            }
+        }
+
+        // প্রশ্ন ইন্ডিকেটর আপডেট
+        function updateQuestionIndicators() {
+            const indicators = questionIndicators.querySelectorAll('.question-indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.classList.remove('current', 'answered');
+                
+                if (index === currentQuestionIndex) {
+                    indicator.classList.add('current');
+                }
+                
+                if (answeredQuestions.has(questionOrder[index])) {
+                    indicator.classList.add('answered');
+                }
+            });
+        }
+
+        // নির্দিষ্ট প্রশ্নে নেভিগেট
+        function navigateToQuestion(index) {
+            if (index >= 0 && index < questions.length) {
+                currentQuestionIndex = index;
+                timeLeft = timeLimit;
+                loadQuestion();
+                startTimer();
+            }
+        }
+
+        // অপশন সিলেক্ট
+        function selectOption(e) {
+            const selectedOptionIndex = parseInt(e.target.dataset.index);
+            const questionIndex = questionOrder[currentQuestionIndex];
+            const question = questions[questionIndex];
+            const isCorrect = selectedOptionIndex === question.correct;
+            
+            // টাইমার বন্ধ করুন
+            clearInterval(timer);
+            
+            // সব অপশনস ডিসেবল করুন
+            const options = optionsContainer.querySelectorAll('.option');
+            options.forEach(option => {
+                option.removeEventListener('click', selectOption);
+                
+                if (parseInt(option.dataset.index) === question.correct) {
+                    option.classList.add('correct');
+                } else if (parseInt(option.dataset.index) === selectedOptionIndex && !isCorrect) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            // প্রশ্ন উত্তর দেওয়া হয়েছে চিহ্নিত করুন
+            answeredQuestions.add(questionIndex);
+            
+            // ফিডব্যাক দেখান
+            if (isCorrect) {
+                feedbackElement.textContent = 'সঠিক উত্তর!';
+                feedbackElement.className = 'feedback correct-feedback';
+                correctCount++;
+                streak++;
+                
+                // স্কোর ক্যালকুলেশন
+                const basePoints = 10;
+                const timeBonus = Math.floor((timeLeft / timeLimit) * 10);
+                const streakBonus = streak > 1 ? (streak - 1) * 5 : 0;
+                const pointsEarned = basePoints + timeBonus + streakBonus;
+                
+                score += pointsEarned;
+                
+                // সাউন্ড এফেক্ট (সিমুলেট)
+                playSound('correct');
+            } else {
+                feedbackElement.textContent = 'ভুল উত্তর!';
+                feedbackElement.className = 'feedback incorrect-feedback';
+                streak = 0;
+                
+                // সাউন্ড এফেক্ট (সিমুলেট)
+                playSound('incorrect');
+            }
+            
+            // সর্বোচ্চ স্ট্রীক আপডেট
+            if (streak > maxStreak) {
+                maxStreak = streak;
+            }
+            
+            // স্ট্যাটস আপডেট
+            scoreElement.textContent = score;
+            streakElement.textContent = streak;
+            correctCountElement.textContent = correctCount;
+            
+            // নেক্সট বাটন দেখান
+            nextBtn.style.display = 'block';
+            
+            // প্রশ্ন ইন্ডিকেটর আপডেট
+            updateQuestionIndicators();
+            
+            // টোটাল টাইম আপডেট
+            totalTime += (timeLimit - timeLeft);
+        }
+
+        // নেক্সট প্রশ্ন
+        function nextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < questions.length) {
+                timeLeft = timeLimit;
+                loadQuestion();
+                startTimer();
+            } else {
+                endGame();
+            }
+        }
+
+        // টাইমার শুরু
+        function startTimer() {
+            clearInterval(timer);
+            timerElement.textContent = timeLeft;
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                
+                if (timeLeft <= 5) {
+                    timerElement.style.color = '#ff4444';
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timeUp();
+                }
+            }, 1000);
+        }
+
+        // টাইম আপ
+        function timeUp() {
+            const options = optionsContainer.querySelectorAll('.option');
+            if (options.length > 0 && !answeredQuestions.has(questionOrder[currentQuestionIndex])) {
+                // স্বয়ংক্রিয়ভাবে ভুল উত্তর হিসাবে চিহ্নিত করুন
+                const questionIndex = questionOrder[currentQuestionIndex];
+                answeredQuestions.add(questionIndex);
+                
+                options.forEach(option => {
+                    option.removeEventListener('click', selectOption);
+                    
+                    if (parseInt(option.dataset.index) === questions[questionIndex].correct) {
+                        option.classList.add('correct');
+                    }
+                });
+                
+                feedbackElement.textContent = 'সময় শেষ!';
+                feedbackElement.className = 'feedback incorrect-feedback';
+                streak = 0;
+                
+                // সাউন্ড এফেক্ট (সিমুলেট)
+                playSound('timeup');
+                
+                // নেক্সট বাটন দেখান
+                nextBtn.style.display = 'block';
+                
+                // প্রশ্ন ইন্ডিকেটর আপডেট
+                updateQuestionIndicators();
+            }
+        }
+
+        // গেম শেষ
+        function endGame() {
+            gameScreen.classList.remove('active');
+            resultScreen.classList.add('active');
+            
+            // ফাইনাল স্কোরস আপডেট
+            finalScoreElement.textContent = score;
+            finalCorrectElement.textContent = correctCount;
+            finalStreakElement.textContent = maxStreak;
+            
+            // গড় সময় ক্যালকুলেট
+            const avgTime = correctCount > 0 ? Math.round(totalTime / correctCount) : 0;
+            finalTimeElement.textContent = `${avgTime} সেকেন্ড`;
+            
+            // লিডারবোর্ড আপডেট
+            updateLeaderboard();
+        }
+
+        // লিডারবোর্ড আপডেট
+        function updateLeaderboard() {
+            // লোকাল স্টোরেজ থেকে লিডারবোর্ড ডেটা নিন
+            let leaderboard = JSON.parse(localStorage.getItem('blackForceLeaderboard')) || [];
+            
+            // বর্তমান স্কোর যোগ করুন
+            const currentScore = {
+                score: score,
+                correct: correctCount,
+                date: new Date().toLocaleDateString('bn-BD'),
+                time: new Date().toLocaleTimeString('bn-BD')
+            };
+            
+            leaderboard.push(currentScore);
+            
+            // স্কোর অনুসারে সাজান (উচ্চ থেকে নিম্ন)
+            leaderboard.sort((a, b) => b.score - a.score);
+            
+            // শুধুমাত্র শীর্ষ ৫ স্কোর রাখুন
+            leaderboard = leaderboard.slice(0, 5);
+            
+            // লোকাল স্টোরেজে সেভ করুন
+            localStorage.setItem('blackForceLeaderboard', JSON.stringify(leaderboard));
+            
+            // লিডারবোর্ড ডিসপ্লে আপডেট করুন
+            leaderboardList.innerHTML = '';
+            leaderboard.forEach((entry, index) => {
+                const leaderboardItem = document.createElement('div');
+                leaderboardItem.classList.add('leaderboard-item');
+                leaderboardItem.innerHTML = `
+                    <div>${index + 1}. ${entry.score} পয়েন্ট</div>
+                    <div>${entry.correct}/৫০ সঠিক</div>
+                    <div>${entry.date} ${entry.time}</div>
+                `;
+                leaderboardList.appendChild(leaderboardItem);
+            });
+        }
+
+        // গেম রিস্টার্ট
+        function restartGame() {
+            resultScreen.classList.remove('active');
+            startScreen.classList.add('active');
+        }
+
+        // রেজাল্ট শেয়ার
+        function shareResult() {
+            const shareText = `আমি Black Force 007 কুইজ গেমে ${score} পয়েন্ট স্কোর করেছি! ${correctCount}/৫০ প্রশ্নের সঠিক উত্তর দিয়েছি। আপনি কি চেষ্টা করবেন?`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Black Force 007 কুইজ গেম',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                // ফallback: ক্লিপবোর্ডে কপি করুন
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('রেজাল্ট কপি করা হয়েছে! আপনি এখন এটি শেয়ার করতে পারেন।');
+                });
+            }
+        }
+
+        // সাউন্ড এফেক্ট (সিমুলেটেড)
+        function playSound(type) {
+            // বাস্তব অ্যাপ্লিকেশনে, আপনি এখানে অডিও ফাইল প্লে করবেন
+            console.log(`Playing ${type} sound`);
+        }
+
+        // অ্যারে শাফল ইউটিলিটি ফাংশন
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+    </script>
+</body>
+</html>
