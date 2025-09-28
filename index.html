@@ -1,4 +1,5 @@
-<!doctype html>
+<!-- index.html — Complete Ready-to-Use Update --><!doctype html>
+
 <html lang="bn">
 <head>
   <meta charset="utf-8" />
@@ -15,90 +16,89 @@
         <button id="settingsBtn" class="icon">⚙️</button>
         <button id="leaderBtn" class="icon">🏆</button>
       </div>
-    </header>
+    </header><main class="main">
+  <section id="startScreen" class="card center">
+    <h1>Black Force 007</h1>
+    <p class="muted">সামাজিক জ্ঞান ভিত্তিক কুইজ — আপনার মানুষ চিনার ক্ষমতা পরীক্ষা করুন</p>
+    <div class="start-actions">
+      <select id="difficulty" aria-label="Timer select">
+        <option value="15">টIMER: 15 সেকেন্ড</option>
+        <option value="30">টIMER: 30 সেকেন্ড</option>
+      </select>
+      <button id="startBtn" class="primary">▶️ শুরু করুন</button>
+    </div>
+  </section>
 
-    <main class="main">
-      <section id="startScreen" class="card center">
-        <h1>Black Force 007</h1>
-        <p class="muted">সামাজিক জ্ঞান ভিত্তিক কুইজ — আপনার মানুষ চিনার ক্ষমতা পরীক্ষা করুন</p>
-        <div class="start-actions">
-          <select id="difficulty" aria-label="Timer select">
-            <option value="15">টIMER: 15 সেকেন্ড</option>
-            <option value="30">টIMER: 30 সেকেন্ড</option>
-          </select>
-          <button id="startBtn" class="primary">▶️ শুরু করুন</button>
-        </div>
-      </section>
+  <section id="quizScreen" class="hidden">
+    <div class="quiz-top">
+      <div class="progressWrap">
+        <div id="progressBar" class="progressBar"><div id="progressFill" class="progressFill"></div></div>
+        <div id="qcounter" class="qcounter">0 / 50</div>
+      </div>
 
-      <section id="quizScreen" class="hidden">
-        <div class="quiz-top">
-          <div class="progressWrap">
-            <div id="progressBar" class="progressBar"><div id="progressFill" class="progressFill"></div></div>
-            <div id="qcounter" class="qcounter">0 / 50</div>
-          </div>
-
-          <div class="scoreWrap">
-            <div class="score">🏅 <span id="scoreDisplay">0</span></div>
-            <div class="timer" id="timerDisplay">⏳ 15</div>
-          </div>
-        </div>
-
-        <article id="questionCard" class="card">
-          <h2 id="questionText">প্রশ্ন লোড হচ্ছে...</h2>
-          <ul id="optionsList" class="options"></ul>
-        </article>
-
-        <div class="quiz-footer">
-          <button id="prevBtn" class="ghost">⟨ Prev</button>
-          <button id="nextBtn" class="ghost">Next ⟩</button>
-        </div>
-      </section>
-
-      <section id="resultScreen" class="card hidden center">
-        <h2>ফলাফল</h2>
-        <p class="big">আপনার স্কোর: <strong id="finalScore">0</strong></p>
-        <p>সর্বোৎকৃষ্ট স্কোর: <strong id="bestScore">0</strong></p>
-        <div class="result-actions">
-          <button id="replayBtn" class="primary">🔁 আবার খেলুন</button>
-          <button id="shareBtn" class="secondary">📤 শেয়ার করুন</button>
-        </div>
-      </section>
-
-      <section id="leaderboard" class="card hidden">
-        <h3>LeaderBoard (Local)</h3>
-        <ol id="leaderList"></ol>
-        <button id="closeLeader" class="ghost">Close</button>
-      </section>
-    </main>
-
-    <div id="toast" class="toast hidden"></div>
-
-    <!-- Settings Modal -->
-    <div id="settingsModal" class="modal hidden">
-      <div class="modal-content card">
-        <h3>Settings</h3>
-        <label>Timer
-          <select id="settingsTimer">
-            <option value="15">15 seconds</option>
-            <option value="30">30 seconds</option>
-          </select>
-        </label>
-        <label>
-          Questions to show
-          <input id="settingsCount" type="number" min="5" max="50" value="50">
-        </label>
-        <label>
-          Sound
-          <input id="settingsSound" type="checkbox" checked>
-        </label>
-        <div class="modal-actions">
-          <button id="saveSettings" class="primary">Save</button>
-          <button id="closeSettings" class="ghost">Cancel</button>
-        </div>
+      <div class="scoreWrap">
+        <div class="score">🏅 <span id="scoreDisplay">0</span></div>
+        <div class="timer" id="timerDisplay">⏳ 15</div>
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <article id="questionCard" class="card">
+      <h2 id="questionText">প্রশ্ন লোড হচ্ছে...</h2>
+      <ul id="optionsList" class="options"></ul>
+    </article>
+
+    <div class="quiz-footer">
+      <button id="prevBtn" class="ghost">⟨ Prev</button>
+      <button id="nextBtn" class="ghost">Next ⟩</button>
+    </div>
+  </section>
+
+  <section id="resultScreen" class="card hidden center">
+    <h2>ফলাফল</h2>
+    <p class="big">আপনার স্কোর: <strong id="finalScore">0</strong></p>
+    <p>সর্বোৎকৃষ্ট স্কোর: <strong id="bestScore">0</strong></p>
+    <div class="result-actions">
+      <button id="replayBtn" class="primary">🔁 আবার খেলুন</button>
+      <button id="shareBtn" class="secondary">📤 শেয়ার করুন</button>
+    </div>
+  </section>
+
+  <section id="leaderboard" class="card hidden">
+    <h3>LeaderBoard (Local)</h3>
+    <ol id="leaderList"></ol>
+    <button id="closeLeader" class="ghost">Close</button>
+  </section>
+</main>
+
+<div id="toast" class="toast hidden"></div>
+
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal hidden">
+  <div class="modal-content card">
+    <h3>Settings</h3>
+    <label>Timer
+      <select id="settingsTimer">
+        <option value="15">15 seconds</option>
+        <option value="30">30 seconds</option>
+      </select>
+    </label>
+    <label>
+      Questions to show
+      <input id="settingsCount" type="number" min="5" max="50" value="50">
+    </label>
+    <label>
+      Sound
+      <input id="settingsSound" type="checkbox" checked>
+    </label>
+    <div class="modal-actions">
+      <button id="saveSettings" class="primary">Save</button>
+      <button id="closeSettings" class="ghost">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
   </div>
 </body>
 </html>
