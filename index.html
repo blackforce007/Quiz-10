@@ -1,12 +1,9 @@
-<!-- index.html — Complete Ready-to-Use Update --><!doctype html>
-
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Black Force 007 — Quiz Game</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
 </head>
 <body>
   <div class="app">
@@ -22,8 +19,8 @@
     <p class="muted">সামাজিক জ্ঞান ভিত্তিক কুইজ — আপনার মানুষ চিনার ক্ষমতা পরীক্ষা করুন</p>
     <div class="start-actions">
       <select id="difficulty" aria-label="Timer select">
-        <option value="15">টIMER: 15 সেকেন্ড</option>
-        <option value="30">টIMER: 30 সেকেন্ড</option>
+        <option value="15">Timer: 15 সেকেন্ড</option>
+        <option value="30">Timer: 30 সেকেন্ড</option>
       </select>
       <button id="startBtn" class="primary">▶️ শুরু করুন</button>
     </div>
@@ -35,7 +32,6 @@
         <div id="progressBar" class="progressBar"><div id="progressFill" class="progressFill"></div></div>
         <div id="qcounter" class="qcounter">0 / 50</div>
       </div>
-
       <div class="scoreWrap">
         <div class="score">🏅 <span id="scoreDisplay">0</span></div>
         <div class="timer" id="timerDisplay">⏳ 15</div>
@@ -72,7 +68,6 @@
 
 <div id="toast" class="toast hidden"></div>
 
-<!-- Settings Modal -->
 <div id="settingsModal" class="modal hidden">
   <div class="modal-content card">
     <h3>Settings</h3>
